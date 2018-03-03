@@ -1,0 +1,9 @@
+{
+    "extends": "webbylab",
+    "rules": {
+        "key-spacing": 0,
+        "camelcase": 0,
+        "more/no-c-like-loops": 0,
+        "react/jsx-max-props-per-line": 0
+    }
+}

@@ -1,4 +1,23 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 
-AppRegistry.registerComponent('githubclient', () => App);
+import configureStore from './src/store/configureStore';
+
+import App from './src/App';
+
+const store = configureStore();
+
+// console.disableYellowBox = true;
+
+export default class GithubClient extends Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <App />
+            </Provider>
+        );
+    }
+}
+
+AppRegistry.registerComponent('githubclient', () => GithubClient);

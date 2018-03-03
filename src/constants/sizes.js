@@ -1,0 +1,6 @@
+export default {
+    HEADER_HEIGHT: 78,
+    LIST_ITEM_HEIGHT: 78,
+    BOTTOM_BAR_HEIGHT: 60,
+    INPUT_LABEL_WIDTH: 106
+};

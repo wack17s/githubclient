@@ -1,22 +1,39 @@
 {
-  "name": "githubclient",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
-  },
-  "dependencies": {
-    "react": "^16.3.0-alpha.1",
-    "react-native": "0.54.0"
-  },
-  "devDependencies": {
-    "babel-jest": "22.4.1",
-    "babel-preset-react-native": "4.0.0",
-    "jest": "22.4.2",
-    "react-test-renderer": "^16.3.0-alpha.1"
-  },
-  "jest": {
-    "preset": "react-native"
-  }
+    "name": "githubclient",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node node_modules/react-native/local-cli/cli.js start",
+        "test": "jest",
+        "lint": "eslint src"
+    },
+    "dependencies": {
+        "prop-types": "^15.6.1",
+        "react": "^16.3.0-alpha.1",
+        "react-native": "0.54.0",
+        "react-native-webview-crosswalk": "https://github.com/wack17s/react-native-webview-crosswalk.git",
+        "react-redux": "^5.0.7",
+        "redux": "^3.7.2",
+        "redux-logger": "^3.0.6",
+        "redux-saga": "^0.16.0",
+        "reselect": "^3.0.1"
+    },
+    "devDependencies": {
+        "babel-eslint": "7.2.3",
+        "babel-jest": "22.4.1",
+        "babel-preset-react-native": "4.0.0",
+        "eslint": "^4.5.0",
+        "eslint-config-webbylab": "^4.0.0",
+        "eslint-plugin-fetch": "^0.0.1",
+        "eslint-plugin-import": "^2.7.0",
+        "eslint-plugin-more": "^0.3.1",
+        "eslint-plugin-no-require-lodash": "^1.1.0",
+        "eslint-plugin-prefer-spread": "^1.0.3",
+        "eslint-plugin-react": "^7.3.0",
+        "jest": "22.4.2",
+        "react-test-renderer": "^16.3.0-alpha.1"
+    },
+    "jest": {
+        "preset": "react-native"
+    }
 }

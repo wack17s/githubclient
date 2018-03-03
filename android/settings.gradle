@@ -1,3 +1,6 @@
 rootProject.name = 'githubclient'
 
+include ':CrosswalkWebView'
+project(':CrosswalkWebView').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview-crosswalk')
+
 include ':app'

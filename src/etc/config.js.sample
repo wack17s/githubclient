@@ -1,0 +1,4 @@
+export default {
+    clintId : 'GITHUB_APP_CIENT_ID',
+    clientSecret: 'GITHUB_APP_CIENT_SECRET'
+};
