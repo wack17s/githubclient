@@ -28,3 +28,7 @@ export class DebounceClass {
 }
 
 export const debounce = new DebounceClass();
+
+export function cropText(text) {
+    return text.length > 30 ? `${text.substr(0, 30)}...` : text;
+}

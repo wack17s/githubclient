@@ -2,27 +2,31 @@ import { all, put, takeLatest, call } from 'redux-saga/effects';
 
 import { FETCH_REPOS, fetchReposSuccess } from '../actions/repos';
 
-function reposSaga(type) {
-    return function* generator({ onSuccess = () => {}, onError = () => {}, page, perPage }) {
-        try {
-            const response = [ perPage ];
+import { fetchRepos } from '../api/repos';
 
-            if (!response.length) onError('empty');
+function* reposSaga({ query, sort, onSuccess = () => {}, onError = () => {}, page, perPage }) {
+    try {
+        const response = yield call(fetchRepos, { query, sort, perPage, page });
 
-            if (!response.errors) {
-                console.log(`Fetch ${type} Repos response: `, response);
+        if (!response.error) {
+            console.log('Fetch Repos response: ', response);
 
-                yield call(onSuccess);
-                yield put(fetchReposSuccess(response, page));
-            } else {
-                console.log(`Fetch ${type} Repos response error: `, response.errors);
+            if (!response.length) {
+                onError('empty');
 
-                yield call(onError, response.errors);
+                return;
             }
-        } catch (error) {
-            console.log(`Fetch ${type} Repos saga error: `, error);
+
+            yield call(onSuccess);
+            yield put(fetchReposSuccess(response, page));
+        } else {
+            console.log('Fetch Repos response error: ', response.error);
+
+            yield call(onError, response.error);
         }
-    };
+    } catch (error) {
+        console.log('Fetch Repos saga error: ', error);
+    }
 }
 
 export default function *watchRepos() {
