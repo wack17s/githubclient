@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, StatusBar, Platform } from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -66,7 +66,7 @@ class SessionManager extends Component {
                 return null;
             case 'loaded':
                 return (
-                    <KeyboardAvoidingView
+                    <View
                         behavior = 'padding'
                         style    = {{ flex: 1 }}
                         keyboardVerticalOffset = {Platform.select({ ios: 0, android: -500 })}
@@ -80,7 +80,7 @@ class SessionManager extends Component {
                                 this.webview = item;
                             }}
                         />
-                    </KeyboardAvoidingView>
+                    </View>
                 );
             default:
                 return null;

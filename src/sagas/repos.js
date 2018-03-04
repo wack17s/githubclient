@@ -1,6 +1,6 @@
 import { all, put, takeLatest, call } from 'redux-saga/effects';
 
-import { FETCH_REPOS, fetchReposSuccess } from '../actions/repos';
+import { FETCH_REPOS, fetchReposSuccess, fetchReposEmpty } from '../actions/repos';
 
 import { fetchRepos } from '../api/repos';
 
@@ -13,6 +13,8 @@ function* reposSaga({ query, sort, onSuccess = () => {}, onError = () => {}, pag
 
             if (!response.length) {
                 onError('empty');
+
+                yield put(fetchReposEmpty());
 
                 return;
             }

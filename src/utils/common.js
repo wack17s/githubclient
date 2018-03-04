@@ -1,4 +1,4 @@
-export function debounceLast(func, delay) {
+export function debounceLast(func, delay = 500) {
     let timeout;
 
     return (...args) => {
@@ -30,5 +30,9 @@ export class DebounceClass {
 export const debounce = new DebounceClass();
 
 export function cropText(text) {
-    return text.length > 30 ? `${text.substr(0, 30)}...` : text;
+    return text.length > 30 ? `${text.substr(0, 28)}..` : text;
+}
+
+export function capitalize(s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
 }

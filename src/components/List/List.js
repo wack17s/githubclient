@@ -33,10 +33,10 @@ export default class List extends PureComponent {
         loading: false
     }
 
-    // eslint-disable-next-line
-    UNSAFE_componentWillMount() {
-        if (this.props.onDataNeeded) this.fetchData();
-    }
+    // // eslint-disable-next-line
+    // UNSAFE_componentWillMount() {
+    //     if (this.props.onDataNeeded) this.fetchData();
+    // }
 
     handleRefresh = () => {
         this.refreshing = true;
@@ -74,12 +74,19 @@ export default class List extends PureComponent {
         }
     }
 
+    fetchByMain = () => {
+        this.locked = false;
+        this.page = 1;
+
+        this.fetchData();
+    }
+
     refreshing = false
     page = 1
     perPage = 15
     locked = false
 
-    keyExtractor = item => item.id || Math.random()
+    keyExtractor = item => item.url || Math.random()
 
     render() {
         const { data, renderItem, onDataNeeded, withSpinner } = this.props;
@@ -111,7 +118,7 @@ export default class List extends PureComponent {
                     )}
                 {this.state.loading && withSpinner && (
                     <View style={styles.spinner}>
-                        <ActivityIndicator size='small' color='#048d91' />
+                        <ActivityIndicator size='large' color='green' />
                     </View>
                 )}
             </View>);
