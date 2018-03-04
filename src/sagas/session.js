@@ -4,7 +4,7 @@ import config from '../etc/config';
 
 import { webview } from '../utils/modals';
 
-import { getToken } from '../api';
+import { getToken } from '../api/session';
 
 // eslint-disable-next-line
 import { getFromAsyncStorage, saveToAsyncStorage, clearAsyncStorage } from '../utils/asyncStorage';
@@ -13,11 +13,11 @@ import { LOGIN_USER, SESSION_INIT, loginUserSuccess } from '../actions/session';
 
 function *initSession({ onSucces = () => {}, onError = () => {} }) {
     try {
-        yield call(clearAsyncStorage, 'user');
-        const user = yield call(getFromAsyncStorage, 'user');
+        // yield call(clearAsyncStorage, 'userToken');
+        const userToken = yield call(getFromAsyncStorage, 'userToken');
 
-        if (user) {
-            yield put(loginUserSuccess(user.user));
+        if (userToken) {
+            yield put(loginUserSuccess());
         }
 
         yield call(onSucces);
@@ -46,18 +46,18 @@ function *loginUser({ onSucces = () => {}, onError = () => {} }) {
 
         const response = yield call(getToken, userCode);
 
-        if (!response.errors) {
+        if (!response.error) {
             console.log('loginUser response :', response);
 
-            yield call(saveToAsyncStorage, 'user', response);
+            yield call(saveToAsyncStorage, 'userToken', response.access_token);
 
-            yield put(loginUserSuccess(response.user));
+            yield put(loginUserSuccess());
 
             yield call(onSucces);
         } else {
-            yield call(onError, response.errors);
+            yield call(onError, response.error);
 
-            console.log('loginUser response errors: ', response.errors);
+            console.log('loginUser response error: ', response.error);
         }
     } catch (error) {
         console.log('loginUser saga error: ', error);

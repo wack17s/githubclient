@@ -1,24 +1,30 @@
-import config from '../etc/config';
+class Api {
+    setToken(token) {
+        this.token = token;
+    }
 
-export async function getToken(code) {
-    const res = await fetch(
-        'https://github.com/login/oauth/access_token',
-        {
+    async request(url, options = {}, headers = {}) {
+        try {
+            const res = await fetch(
+                url,
+                {
+                    ...options,
+                    headers : {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authentication: this.token,
+                        ...headers
+                    }
+                }
+            );
 
-            method: 'post',
-            headers : {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                client_id: config.clintId,
-                client_secret: config.clientSecret,
-                code
-            })
+            const data = await res.json();
+
+            return data;
+        } catch (err) {
+            console.log('Request error: ', err);
         }
-    );
-
-    const data = await res.json();
-
-    return data;
+    }
 }
+
+export default new Api();
