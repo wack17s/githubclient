@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar, Platform } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -32,7 +32,7 @@ class SessionManager extends Component {
             () => this.setState({ status: 'loaded' })
         );
 
-        StatusBar.setBarStyle('light-content');
+        StatusBar.setBarStyle('dark-content');
     }
 
     componentDidMount() {
@@ -66,11 +66,7 @@ class SessionManager extends Component {
                 return null;
             case 'loaded':
                 return (
-                    <View
-                        behavior = 'padding'
-                        style    = {{ flex: 1 }}
-                        keyboardVerticalOffset = {Platform.select({ ios: 0, android: -500 })}
-                    >
+                    <View style={{ flex: 1 }}>
                         <StatusBar translucent backgroundColor='transparent' />
 
                         {this.props.isLoggedIn ? <MainPage /> : <LoginPage />}

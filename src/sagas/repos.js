@@ -4,12 +4,20 @@ import { FETCH_REPOS, fetchReposSuccess, fetchReposEmpty } from '../actions/repo
 
 import { fetchRepos } from '../api/repos';
 
-function* reposSaga({ query, sort, onSuccess = () => {}, onError = () => {}, page, perPage }) {
+import { getFromAsyncStorage, saveToAsyncStorage } from '../utils/asyncStorage';
+
+function* reposSaga({ query, sort, onSuccess = () => {}, onError = () => {}, page, perPage, isConnected }) {
     try {
-        const response = yield call(fetchRepos, { query, sort, perPage, page });
+        let response;
+
+        if (!isConnected) {
+            response = yield call(getFromAsyncStorage, 'lastRepos') || [];
+        } else {
+            response = yield call(fetchRepos, { query, sort, perPage, page });
+        }
 
         if (!response.error) {
-            console.log('Fetch Repos response: ', response);
+            console.og('Fetch Repos response: ', response);
 
             if (!response.length) {
                 onError('empty');
@@ -19,15 +27,17 @@ function* reposSaga({ query, sort, onSuccess = () => {}, onError = () => {}, pag
                 return;
             }
 
+            if (isConnected) yield call(saveToAsyncStorage, 'lastRepos', response);
+
             yield call(onSuccess);
             yield put(fetchReposSuccess(response, page));
         } else {
-            console.log('Fetch Repos response error: ', response.error);
+            console.og('Fetch Repos response error: ', response.error);
 
             yield call(onError, response.error);
         }
     } catch (error) {
-        console.log('Fetch Repos saga error: ', error);
+        console.og('Fetch Repos saga error: ', error);
     }
 }
 

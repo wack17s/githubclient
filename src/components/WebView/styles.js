@@ -1,6 +1,8 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, StatusBar, Platform } from 'react-native';
 
 const { height, width } = Dimensions.get('window');
+
+const margin = Platform.OS === 'android' ? StatusBar.currentHeight : 12;
 
 export default StyleSheet.create({
     background: {
@@ -9,15 +11,17 @@ export default StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        backgroundColor: 'black'
+        backgroundColor: 'transparent'
     },
     container: {
-        width,
+        width: width - margin * 2,
         flexDirection: 'column',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        margin,
+        marginTop: Platform.OS === 'ios' ? 12 : 0
     },
     header: {
-        width,
+        width: width - margin * 2,
         height: 64,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -25,8 +29,8 @@ export default StyleSheet.create({
         backgroundColor: '#D8D8D8'
     },
     webview: {
-        height: height - 64,
-        width
+        height: height - 64 - margin * 2,
+        width: width - margin * 2
     },
     button: {
         width: 64,

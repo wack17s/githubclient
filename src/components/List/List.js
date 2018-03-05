@@ -20,6 +20,7 @@ export default class List extends PureComponent {
     static propTypes = {
         data         : PropTypes.array.isRequired,
         renderItem   : PropTypes.func.isRequired,
+        isConnected  : PropTypes.bool.isRequired,
         onDataNeeded : PropTypes.func,
         withSpinner  : PropTypes.bool
     }
@@ -39,6 +40,8 @@ export default class List extends PureComponent {
     // }
 
     handleRefresh = () => {
+        if (!this.props.isConnected) return;
+
         this.refreshing = true;
         this.locked = false;
         this.page = 1;
@@ -47,7 +50,7 @@ export default class List extends PureComponent {
     }
 
     handleEndReached = () => {
-        if (this.perPage > this.props.data.length) return;
+        if (this.perPage > this.props.data.length || !this.props.isConnected) return;
 
         this.page++;
 

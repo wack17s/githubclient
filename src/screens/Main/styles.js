@@ -33,5 +33,13 @@ export default StyleSheet.create({
         height: 1,
         backgroundColor: 'grey',
         marginTop: 8
+    },
+    offlineHeader: {
+        height: 80 + 24 + 12,
+        width,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: 'grey'
     }
 });

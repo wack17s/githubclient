@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
+import withNetInfo from '../../helpers/withNetInfo';
+
 import List from '../../components/List';
 import SearchInput from '../../components/SearchInput';
 import SortBlock from '../../components/SortBlock';
 
-import { fetchRepos } from '../../actions/repos';
+import { fetchRepos, fetchReposEmpty } from '../../actions/repos';
 
 import { getRepos } from '../../selectors/repos';
 
@@ -18,12 +20,15 @@ import { cropText, debounceLast } from '../../utils/common';
 import styles from './styles';
 
 const EMPTY_AFTER_FETCH_MSG = 'Ther is not repository with name: ';
-const EMPTY_MSG = 'Start seraching to load repositories.';
+const EMPTY_MSG = 'Start searching to load repositories.';
+const OFFLINE_MSG = 'Offline';
 
 class Main extends PureComponent {
     static propTypes = {
-        fetchRepos : PropTypes.func.isRequired,
-        repos      : PropTypes.array
+        fetchRepos      : PropTypes.func.isRequired,
+        fetchReposEmpty : PropTypes.func.isRequired,
+        isConnected: PropTypes.bool.isRequired,
+        repos: PropTypes.array
     }
 
     static defaultProps = {
@@ -35,6 +40,22 @@ class Main extends PureComponent {
         searchQuery: '',
         sort: '',
         isEmptyArfterFetch: false
+    }
+
+    componentDidMount() {
+        if (!this.props.isConnected) {
+            this.list.fetchByMain();
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.isConnected && !this.props.isConnected) {
+            this.list.fetchByMain();
+
+            this.setState({ searchQuery: '', sort: '' });
+        } else if (!prevProps.isConnected && this.props.isConnected) {
+            this.props.fetchReposEmpty();
+        }
     }
 
     handleFetchRepos = ({ page, perPage, onEmpty = () => {}, callback = () => {} }) => {
@@ -57,7 +78,8 @@ class Main extends PureComponent {
                 callback();
             },
             page,
-            perPage
+            perPage,
+            this.props.isConnected
         );
     }
 
@@ -86,6 +108,8 @@ class Main extends PureComponent {
         () => {
             if (this.state.searchQuery) {
                 this.list.fetchByMain();
+            } else {
+                this.props.fetchReposEmpty();
             }
         },
         1000
@@ -118,11 +142,12 @@ class Main extends PureComponent {
 
     renderEmptyBlock = () => {
         const { isEmptyArfterFetch, searchQuery } = this.state;
+        const withConnectionMsg = isEmptyArfterFetch ? `${EMPTY_AFTER_FETCH_MSG}${searchQuery}` : EMPTY_MSG;
 
         return (
             <View style={styles.emptyBlock}>
                 <Text>
-                    {isEmptyArfterFetch ? `${EMPTY_AFTER_FETCH_MSG}${searchQuery}` : EMPTY_MSG}
+                    {this.props.isConnected ? withConnectionMsg : OFFLINE_MSG}
                 </Text>
             </View>
         );
@@ -130,14 +155,25 @@ class Main extends PureComponent {
 
     render() {
         const { searchQuery, loading, sort } = this.state;
-        const { repos } = this.props;
+        const { repos, isConnected } = this.props;
 
         return (
             <View style={styles.container}>
-                <View style={styles.searchContainer}>
-                    <SearchInput text={searchQuery} onChangeText={this.handleSearch} />
-                </View>
-                <SortBlock onChange={this.handleSortBy} choosed={sort} />
+                {isConnected
+                    ? (
+                        <View>
+                            <View style={styles.searchContainer}>
+                                <SearchInput text={searchQuery} onChangeText={this.handleSearch} />
+                            </View>
+                            <SortBlock onChange={this.handleSortBy} choosed={sort} />
+                        </View>
+                    )
+                    : (
+                        <View style={styles.offlineHeader}>
+                            <Text>You are offline now!</Text>
+                            {repos && <Text>Last search results:</Text>}
+                        </View>
+                    )}
                 <View style={styles.listContainer}>
                     <List
                         ref = {item => {
@@ -146,6 +182,7 @@ class Main extends PureComponent {
                         data         = {loading ? [] : repos}
                         onDataNeeded = {this.handleFetchRepos}
                         renderItem   = {this.renderItem}
+                        isConnected  = {isConnected}
                     />
                 </View>
                 {!repos.length && this.renderEmptyBlock()}
@@ -160,4 +197,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { fetchRepos })(Main);
+export default connect(mapStateToProps, { fetchRepos, fetchReposEmpty })(withNetInfo(Main));
