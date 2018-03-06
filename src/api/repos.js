@@ -11,7 +11,7 @@ export async function fetchRepos({ query, sort, perPage, page }) {
         { method: 'get', headers: { Accept: 'application/vnd.github.mercy-preview+json' } }
     ) || {};
 
-    if (!data.error) return dumpRepos(data.items);
+    if (!data.error && data.items) return dumpRepos(data.items);
 
     return data;
 }

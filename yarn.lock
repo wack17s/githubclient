@@ -1217,6 +1217,10 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
+base-64@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+
 base64-js@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-0.0.8.tgz#1101e9544f4a76b1bc3b26d452ca96d7a35e7978"
@@ -3274,6 +3278,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+livr@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/livr/-/livr-2.0.2.tgz#9d4f2205009adde3030caa2ae2cb3bb23d4d8383"
+
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -4168,6 +4176,10 @@ react-devtools-core@3.1.0:
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
+
+react-native-device-info@^0.17.3:
+  version "0.17.3"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.17.3.tgz#7aa58f5c6ce1381beddc86429b9fd4e06e3ce20d"
 
 "react-native-webview-crosswalk@https://github.com/wack17s/react-native-webview-crosswalk.git":
   version "0.5.0"

@@ -8,10 +8,13 @@
         "lint": "eslint src"
     },
     "dependencies": {
+        "base-64": "^0.1.0",
+        "livr": "^2.0.2",
         "moment": "^2.21.0",
         "prop-types": "^15.6.1",
         "react": "^16.3.0-alpha.1",
         "react-native": "0.54.0",
+        "react-native-device-info": "^0.17.3",
         "react-native-webview-crosswalk": "https://github.com/wack17s/react-native-webview-crosswalk.git",
         "react-redux": "^5.0.7",
         "redux": "^3.7.2",

@@ -1,10 +1,6 @@
 import { call, all, takeLatest, put } from 'redux-saga/effects';
 
-import config from '../etc/config';
-
-import { webview } from '../utils/modals';
-
-import { getToken } from '../api/session';
+import { login } from '../api/session';
 
 // eslint-disable-next-line
 import { getFromAsyncStorage, saveToAsyncStorage, clearAsyncStorage } from '../utils/asyncStorage';
@@ -28,38 +24,26 @@ function *initSession({ onSucces = () => {}, onError = () => {} }) {
     }
 }
 
-function *loginUser({ onSucces = () => {}, onError = () => {} }) {
+function *loginUser({ username, password, onSucces = () => {}, onError = () => {} }) {
     try {
-        const userCode = yield new Promise((res, rej) => {
-            webview.open(
-                {
-                    url: `https://github.com/login/oauth/authorize?scope=user:email&client_id=${config.clintId}`
-                },
-                code => {
-                    res(code);
-                },
-                () => {
-                    rej();
-                }
-            );
-        });
+        const response = yield call(login, username, password);
+        const error = response.error || response.message;
 
-        const response = yield call(getToken, userCode);
-
-        if (!response.error) {
+        if (!error) {
             console.log('loginUser response :', response);
 
-            yield call(saveToAsyncStorage, 'userToken', response.access_token);
+            yield call(saveToAsyncStorage, 'userToken', response.token);
 
             yield put(loginUserSuccess());
 
             yield call(onSucces);
         } else {
-            yield call(onError, response.error);
+            yield call(onError, error);
 
-            console.log('loginUser response error: ', response.error);
+            console.log('loginUser response error: ', error);
         }
     } catch (error) {
+        yield call(onError, error);
         console.log('loginUser saga error: ', error);
     }
 }

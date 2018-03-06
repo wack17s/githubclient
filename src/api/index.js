@@ -3,7 +3,7 @@ class Api {
         this.token = token;
     }
 
-    async request(url, options = {}, headers = {}) {
+    async request(url, options = {}) {
         try {
             const res = await fetch(
                 url,
@@ -13,7 +13,7 @@ class Api {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         Authentication: this.token,
-                        ...headers
+                        ...options.headers
                     }
                 }
             );

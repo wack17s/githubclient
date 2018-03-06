@@ -1,9 +1,12 @@
 import React, { PureComponent } from 'react';
 import { View, Text, StatusBar, Modal, TouchableOpacity, WebView, Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import WebViewAndroid from 'react-native-webview-crosswalk';
 
 import styles from './styles';
+
+const ANDROID_DEVICE_VERSION = Platform.OS === 'android' ? DeviceInfo.getSystemVersion() : 'whatever';
 
 export default class Web extends PureComponent {
     state = {
@@ -64,7 +67,7 @@ export default class Web extends PureComponent {
                                 <View style={styles.button} />
                             </View>
                             <View style={styles.webview}>
-                                {Platform.OS === 'android'
+                                {Platform.OS === 'android' && ANDROID_DEVICE_VERSION < '4.5'
                                     ? (
                                         <WebViewAndroid
                                             source      = {{ uri: url }}

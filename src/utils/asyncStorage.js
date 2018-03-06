@@ -14,7 +14,7 @@ export async function saveToAsyncStorage(key, data) {
 
 export async function getFromAsyncStorage(key) {
     try {
-        const savedDataJSON = await AsyncStorage.getItem(key) || 'null';
+        const savedDataJSON = await AsyncStorage.getItem(key);
 
         console.log(`${key} was successfuly getted from async storage.`);
 

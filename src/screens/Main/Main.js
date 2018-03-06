@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import withNetInfo from '../../helpers/withNetInfo';
 
 import List from '../../components/List';
-import SearchInput from '../../components/SearchInput';
+import TextInput from '../../components/TextInput';
 import SortBlock from '../../components/SortBlock';
 
 import { fetchRepos, fetchReposEmpty } from '../../actions/repos';
@@ -22,6 +22,8 @@ import styles from './styles';
 const EMPTY_AFTER_FETCH_MSG = 'Ther is not repository with name: ';
 const EMPTY_MSG = 'Start searching to load repositories.';
 const OFFLINE_MSG = 'Offline';
+
+const PLACEHOLDER = 'Start typing to find a repository..';
 
 class Main extends PureComponent {
     static propTypes = {
@@ -49,11 +51,13 @@ class Main extends PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.isConnected && !this.props.isConnected) {
+        const { isConnected } = this.props;
+
+        if (prevProps.isConnected && !isConnected) {
             this.list.fetchByMain();
 
             this.setState({ searchQuery: '', sort: '' });
-        } else if (!prevProps.isConnected && this.props.isConnected) {
+        } else if (!prevProps.isConnected && isConnected) {
             this.props.fetchReposEmpty();
         }
     }
@@ -74,6 +78,8 @@ class Main extends PureComponent {
 
                     this.setState({ isEmptyArfterFetch: true });
                 }
+
+                this.setState({ loading: false });
 
                 callback();
             },
@@ -163,7 +169,11 @@ class Main extends PureComponent {
                     ? (
                         <View>
                             <View style={styles.searchContainer}>
-                                <SearchInput text={searchQuery} onChangeText={this.handleSearch} />
+                                <TextInput
+                                    text         = {searchQuery}
+                                    onChangeText = {this.handleSearch}
+                                    placeholder  = {PLACEHOLDER}
+                                />
                             </View>
                             <SortBlock onChange={this.handleSortBy} choosed={sort} />
                         </View>

@@ -1,21 +1,23 @@
-import config from '../etc/config';
+import base64 from 'base-64';
 
 import api from './index';
 
-export async function getToken(code) {
+export async function login(username, password) {
+    const timestamp = Date.now();
+
     const data = await api.request(
-        'https://github.com/login/oauth/access_token',
+        'https://api.github.com/authorizations',
         {
             method: 'post',
+            headers: {
+                Authorization: `Basic ${base64.encode(`${username}:${password}`)}`
+            },
             body: JSON.stringify({
-                client_id: config.clintId,
-                client_secret: config.clientSecret,
-                code
-            })
+                scopes: [ 'repo', 'user' ], note: `getting-started for ${username}-${timestamp}` })
         }
     ) || {};
 
-    const { access_token: token } = data;
+    const { token } = data;
 
     if (token) {
         api.setToken(token);
